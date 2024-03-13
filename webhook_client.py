@@ -14,17 +14,20 @@ def webhook():
 
     payload = request.get_json()
 
-    print_repository(payload)
-    print_sender(payload)
+    print_repository_info(payload)
+    print_sender_info(payload)
 
     event_type = request.headers.get('X-GitHub-Event')
     print(f"Event: {event_type}")
+
+    if event_type == "push":
+        print_push_info()
 
     # Respond to indicate successful receipt
     return jsonify(success=True)
 
 
-def print_repository(payload):
+def print_repository_info(payload):
 
     repository = payload.get('repository', {})
 
@@ -45,11 +48,18 @@ def print_repository(payload):
     print(f"Visibility: {visibility}")
 
 
-def print_sender(payload):
+def print_sender_info(payload):
 
     sender = payload.get('sender', {})
     sender_login = sender.get('login')
     print(f"Sender: {sender_login}")
+
+
+def print_push_info(payload):
+
+    head_commit = payload.get('head_commit', {})
+    msg = head_commit.get('message')
+    print(f"Head commit: {msg}")
 
 
 if __name__ == '__main__':
