@@ -21,7 +21,7 @@ def webhook():
     print(f"Event: {event_type}")
 
     if event_type == "push":
-        print_push_info()
+        print_push_info(payload)
 
     # Respond to indicate successful receipt
     return jsonify(success=True)
