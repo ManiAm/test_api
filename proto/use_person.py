@@ -1,4 +1,11 @@
-from generated import person_pb2
+import os
+import sys
+
+# Add the 'generated' directory to the Python path
+sys.path.append(os.path.abspath('./generated'))
+
+import person_pb2
+
 
 def main():
 

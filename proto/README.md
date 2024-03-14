@@ -2,7 +2,7 @@
 
 Generate python code from the `person.proto` file.
 
-    protoc -I=. --python_out=./generated ./person.proto
+    python3 -m grpc_tools.protoc -I=. --python_out=./generated ./person.proto
 
 The command generates a `person_pb2.py` file containing the Python classes for your Person message and its nested types.
 
