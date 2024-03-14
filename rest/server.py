@@ -3,7 +3,7 @@ from flask import make_response
 
 app = Flask(__name__)
 
-@app.route('/get', methods=['GET'])
+@app.route('/users', methods=['GET'])
 def handle_get():
 
     # note that content_type is not relevant here,
@@ -15,19 +15,53 @@ def handle_get():
 
     # make sure to use qoutes around the URL when using &
 
-    # test with: curl "http://localhost:5000/get?name=John&type=txt"
+    # test with: curl "http://localhost:5000/users?name=John&type=txt"
     if return_type == "txt":
         return f'Hello, {name}'
 
-    # test with: curl "http://localhost:5000/get?name=John&type=html"
+    # test with: curl "http://localhost:5000/users?name=John&type=html"
     if return_type == "html":
         return f'<h1>Hello {name}</h1>'
 
-    # test with: curl "http://localhost:5000/get?name=John&type=json"
+    # test with: curl "http://localhost:5000/users?name=John&type=json"
     if return_type == "json":
         return jsonify(message=f"Hello, {name}!")
 
     return make_response('Bad request', 400)
+
+
+@app.route('/users/<string:username>/pics', methods=['GET'])
+@app.route('/users/<string:username>/pics/<int:pic_id>', methods=['GET'])
+def get_user_pics(username, pic_id=None):
+
+    users = {
+        'john': {
+            'pics': {
+                123: {
+                    'title': 'picture name 1',
+                    'geo': 'SJC'
+                }
+            }
+        }
+    }
+
+    user = users.get(username, None)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    # Return all pics for the user
+    # test with: curl "http://localhost:5000/users/john/pics"
+    if pic_id is None:
+        return jsonify(user['pics'])
+
+    # Find and return the specific pic
+    # test with: curl "http://localhost:5000/users/john/pics/123"
+    pics_dict = user.get("pics", {})
+    pic = pics_dict.get(pic_id, None)
+    if not pic:
+        return jsonify({'error': 'pic not found'}), 404
+
+    return jsonify(pic)
 
 
 @app.route('/post', methods=['POST'])
