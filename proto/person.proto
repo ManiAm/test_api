@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package tutorial;
+
+message Person {
+    string name = 1;
+    string email = 2;
+    int32 id = 3;
+    double salary = 4;
+    bool employed = 5;
+
+    enum Gender {
+        MALE = 0;
+        FEMALE = 1;
+        OTHER = 2;
+    }
+    Gender gender = 6;
+
+    bytes random = 7;
+
+    map<string, string> body_map = 8;  // A map of key-value pairs
+    repeated int32 money = 9;
+
+    message Car {
+        string brand = 1;
+        string model = 2;
+    }
+
+    Car person_car = 10;
+
+    // example for 'oneof'
+
+    message Payment {
+        oneof payment_method {
+            CreditCard credit_card = 1;
+            Paypal paypal = 2;
+            BankTransfer bank_transfer = 3;
+        }
+    }
+
+    message CreditCard {
+        string card_number = 1;
+        string cardholder_name = 2;
+        string expiry_date = 3;
+        string cvv = 4;
+    }
+
+    message Paypal {
+        string email = 1;
+    }
+
+    message BankTransfer {
+        string bank_account_number = 1;
+        string bank_name = 2;
+        string sort_code = 3;
+    }
+
+    Payment myPayment = 11;
+}
