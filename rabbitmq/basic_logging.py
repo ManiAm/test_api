@@ -34,7 +34,7 @@ for idx in range(100):
 
     log.info(f"Sent message: {message}")
 
-    # call this method to handle RabbitMQ events (e.g., messages arriving)
+    # Call this method to handle RabbitMQ events (e.g., messages arriving)
     connection.process_data_events(1)
 
 # Close the connection
